@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Différenciation pédagogique avec l'IA</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f7;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-muted: #57534e;
+      --border: #e7e5e4;
+      --radius: 14px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.08), 0 12px 40px rgba(0,0,0,0.06);
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+      --gem: #7c3aed;
+      --gem-bg: #f5f3ff;
+      --canvas: #0891b2;
+      --canvas-bg: #ecfeff;
+      --deep-research: #2563eb;
+      --deep-research-bg: #eff6ff;
+      --guided: #d97706;
+      --guided-bg: #fffbeb;
+      --image: #e11d48;
+      --image-bg: #fff1f2;
+      --nlm: #ea580c;
+      --nlm-bg: #fff7ed;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+      color: white;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    .hero-content {
+      position: relative;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+    .hero .subtitle {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      opacity: 0.9;
+      font-weight: 500;
+      margin-bottom: 1.2rem;
+    }
+    .hero .context {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      max-width: 560px;
+      margin: 0 auto 1.4rem;
+      line-height: 1.55;
+    }
+    .hero .instructions {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ===== VIEWS ===== */
+    .view { display: none; }
+    .view.active { display: block; animation: fadeIn 0.35s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== LANDING ===== */
+    #landing { padding: 2.5rem 0 4rem; }
+    #landing h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    #landing .landing-sub {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .disciplines-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .discipline-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.6rem 1.2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      color: var(--text);
+    }
+    .discipline-card:hover {
+      border-color: #a78bfa;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+    .discipline-card .icon {
+      font-size: 2.4rem;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+    .discipline-card .name {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .discipline-card .tools {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
+
+    /* ===== DETAIL VIEW ===== */
+    #detail { padding: 1.5rem 0 4rem; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.5rem 1rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: inherit;
+      margin-bottom: 1.5rem;
+    }
+    .back-btn:hover { background: var(--surface); color: var(--text); border-color: #a78bfa; }
+
+    .detail-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.4rem;
+    }
+    .detail-header .icon { font-size: 2rem; }
+    .detail-header h2 { font-size: 1.7rem; font-weight: 800; }
+
+    .detail-description {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .section-title.gemini { border-color: var(--gem); }
+    .section-title.notebooklm { border-color: var(--nlm); margin-top: 2.5rem; }
+
+    .challenges-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    /* ===== CHALLENGE CARDS ===== */
+    .challenge-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+    }
+    .challenge-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+    .challenge-card.required {
+      border: 2px solid var(--image);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .tool-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tool-badge.gem { background: var(--gem-bg); color: var(--gem); }
+    .tool-badge.canvas { background: var(--canvas-bg); color: var(--canvas); }
+    .tool-badge.deep-research { background: var(--deep-research-bg); color: var(--deep-research); }
+    .tool-badge.guided { background: var(--guided-bg); color: var(--guided); }
+    .tool-badge.image { background: var(--image-bg); color: var(--image); }
+    .tool-badge.nlm { background: var(--nlm-bg); color: var(--nlm); }
+    .tool-badge.required-badge {
+      background: var(--image);
+      color: white;
+    }
+
+    .card-objective {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 1rem;
+      line-height: 1.55;
+    }
+
+    .card-steps {
+      list-style: none;
+      counter-reset: steps;
+    }
+    .card-steps li {
+      counter-increment: steps;
+      padding: 0.45rem 0 0.45rem 2.2rem;
+      position: relative;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .card-steps li::before {
+      content: counter(steps);
+      position: absolute;
+      left: 0;
+      top: 0.45rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .card-deliverable {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      background: #f0fdf4;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #166534;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .card-deliverable .deliverable-icon { flex-shrink: 0; }
+
+    /* ===== TOOL EXPLAINERS ===== */
+    .tools-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: help;
+      position: relative;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ===== PRESENTATION SECTION ===== */
+    .presentation-section {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-top: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .presentation-section h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .presentation-questions {
+      list-style: none;
+      counter-reset: pq;
+    }
+    .presentation-questions li {
+      counter-increment: pq;
+      padding: 0.8rem 0 0.8rem 3rem;
+      position: relative;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .presentation-questions li:last-child { border-bottom: none; }
+    .presentation-questions li::before {
+      content: counter(pq);
+      position: absolute;
+      left: 0;
+      top: 0.8rem;
+      width: 2rem;
+      height: 2rem;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* ===== PRESENTATION FAB ===== */
+    .fab {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      padding: 0.8rem 1.2rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+      transition: all var(--transition);
+      font-family: inherit;
+      z-index: 90;
+      display: none;
+    }
+    .fab.visible { display: flex; align-items: center; gap: 0.4rem; }
+    .fab:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(79, 70, 229, 0.45); }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background var(--transition);
+    }
+    .modal-close:hover { background: var(--bg); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .hero { padding: 2rem 1rem 1.8rem; }
+      .disciplines-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+      .discipline-card { padding: 1.2rem 0.8rem; }
+      .discipline-card .icon { font-size: 1.8rem; }
+      .challenge-card { padding: 1.2rem; }
+      .card-header { flex-direction: column; gap: 0.5rem; }
+      .fab { bottom: 1rem; right: 1rem; padding: 0.7rem 1rem; font-size: 0.82rem; }
+      .tools-legend { flex-direction: column; gap: 0.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Différenciation pédagogique avec l'IA</h1>
+      <p class="subtitle">Atelier mains sur les touches — Gemini & NotebookLM</p>
+      <p class="context">
+        Explorez comment l'intelligence artificielle peut vous aider à créer
+        rapidement des documents adaptés pour tous vos élèves : douance,
+        difficultés langagières, TSA. Fini l'argument du temps!
+      </p>
+      <div class="instructions">
+        💡 Choisissez 2 défis Gemini + 1 défi NotebookLM — l'infographie est pour tous
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container">
+
+    <!-- LANDING VIEW -->
+    <section id="landing" class="view active">
+      <h2 style="margin-top: 2.5rem;">Choisissez votre discipline</h2>
+      <p class="landing-sub">Cliquez sur votre discipline pour voir vos défis personnalisés</p>
+      <div class="disciplines-grid" id="disciplines-grid"></div>
+
+      <!-- Presentation section on landing -->
+      <div class="presentation-section" style="margin-top: 3rem;">
+        <h3>📋 Guide de présentation (dernier tiers)</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.92rem;">
+          Chaque équipe-discipline présente en <strong>5 minutes</strong> :
+        </p>
+        <ol class="presentation-questions">
+          <li><strong>Quel(s) défi(s)</strong> avez-vous tentés?</li>
+          <li><strong>Montrez votre meilleur résultat</strong> — partagez votre écran et montrez ce que l'IA a produit.</li>
+          <li><strong>Qu'est-ce qui vous a surpris?</strong> En bien ou en mal. Qu'est-ce qui a accroché? Qu'est-ce qui a déçu?</li>
+          <li><strong>Est-ce que ça répond à l'argument du temps?</strong> Honnêtement, est-ce que créer trois versions d'un document avec ces outils est réaliste dans votre quotidien?</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- DETAIL VIEW -->
+    <section id="detail" class="view">
+      <button class="back-btn" onclick="showLanding()">← Toutes les disciplines</button>
+      <div id="detail-content"></div>
+    </section>
+
+  </main>
+
+  <!-- FAB -->
+  <button class="fab" id="fab" onclick="openModal()">📋 Présentation</button>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h3 style="margin-bottom: 1rem;">📋 Guide de présentation</h3>
+      <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.92rem;">
+        Chaque équipe présente en <strong>5 minutes</strong> :
+      </p>
+      <ol class="presentation-questions">
+        <li><strong>Quel(s) défi(s)</strong> avez-vous tentés?</li>
+        <li><strong>Montrez votre meilleur résultat</strong> — partagez votre écran.</li>
+        <li><strong>Qu'est-ce qui vous a surpris?</strong> En bien ou en mal.</li>
+        <li><strong>Est-ce que ça répond à l'argument du temps?</strong> Est-ce réaliste dans votre quotidien?</li>
+      </ol>
+    </div>
+  </div>
+
+  <footer>
+    Atelier conçu pour le développement professionnel · Différenciation pédagogique avec l'IA
+  </footer>
+
+  <script>
+    // ===== DATA =====
+    const disciplines = [
+      {
+        id: 'mathematiques',
+        name: 'Mathématiques',
+        icon: '📐',
+        tools: 'Gem · Canvas · Infographie',
+        gemini: [
+          {
+            title: 'Gem « Adaptateur de problèmes »',
+            tool: 'Gem',
+            toolClass: 'gem',
+            objective: 'Créez un Gem personnalisé qui prend n\'importe quel problème mathématique et le décline automatiquement en trois versions adaptées à vos élèves.',
+            steps: [
+              'Dans Gemini, ouvrez le menu des Gems et cliquez sur « Créer un Gem ».',
+              'Décrivez son rôle : transformer un problème mathématique en trois versions — <strong>Douance</strong> (contraintes supplémentaires, extension), <strong>Régulier</strong> (tel quel), <strong>Adapté</strong> (vocabulaire simplifié, étapes numérotées, consignes sans implicite).',
+              'Testez-le avec un problème de proportions ou d\'algèbre de votre choix.',
+              'Ajustez les instructions du Gem si les résultats ne sont pas satisfaisants.'
+            ],
+            deliverable: 'Montrez les trois versions d\'un même problème côte à côte.'
+          },
+          {
+            title: 'Exercice différencié en direct',
+            tool: 'Canvas',
+            toolClass: 'canvas',
+            objective: 'Utilisez l\'outil Canvas de Gemini pour co-créer et itérer sur un exercice de résolution de problèmes, directement dans l\'interface.',
+            steps: [
+              'Ouvrez Canvas dans Gemini (icône de document dans la barre d\'outils).',
+              'Collez un exercice existant de résolution de problèmes.',
+              'Demandez à Gemini d\'ajouter des <strong>indices progressifs</strong> pour les élèves en difficulté.',
+              'Demandez ensuite des <strong>prolongements ouverts</strong> pour les élèves doués.',
+              'Faites ajuster les consignes pour un élève TSA : consignes explicites, sans sous-entendus.',
+              'Itérez dans Canvas jusqu\'à ce que vous soyez satisfait des trois versions.'
+            ],
+            deliverable: 'Montrez comment Canvas vous a permis de raffiner le document en temps réel.'
+          },
+          {
+            title: 'Infographie : Visualiser un concept abstrait',
+            tool: 'Infographie',
+            toolClass: 'image',
+            required: true,
+            objective: 'Demandez à Gemini de générer une infographie qui explique visuellement un concept mathématique. Idéal comme référence murale pour les élèves visuels.',
+            steps: [
+              'Dans Gemini, demandez : « Crée une infographie claire et colorée qui explique [concept] pour des élèves du secondaire. »',
+              'Essayez avec : les fractions, Pythagore, les fonctions, les probabilités…',
+              'Itérez sur le prompt pour améliorer la clarté et le style visuel.',
+              'Demandez des ajustements : plus grand texte, couleurs contrastées, moins de texte…'
+            ],
+            deliverable: 'Présentez votre infographie et expliquez comment elle pourrait aider un élève avec des difficultés langagières.'
+          }
+        ],
+        notebookLM: [
+          {
+            title: 'Notes de cours en podcast',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Transformez vos notes de cours en un résumé audio que vos élèves pourraient écouter en complément ou en révision.',
+            steps: [
+              'Ouvrez NotebookLM et créez un nouveau notebook.',
+              'Uploadez vos notes de cours sur un chapitre (PDF, Google Doc, ou copiez-collez).',
+              'Cliquez sur « Audio Overview » pour générer un podcast.',
+              'Écoutez le résultat : est-ce fidèle? Utile pour un élève avec des difficultés de lecture?'
+            ],
+            deliverable: 'Faites écouter un extrait et partagez votre évaluation.'
+          },
+          {
+            title: 'Guide d\'étude différencié',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Générez un guide d\'étude à partir de vos documents, puis demandez une version adaptée pour un élève avec des difficultés langagières.',
+            steps: [
+              'Uploadez un examen ou une série d\'exercices dans votre notebook.',
+              'Demandez à NotebookLM de générer un guide d\'étude.',
+              'Ensuite, demandez-lui une version simplifiée pour un élève avec difficultés langagières.',
+              'Comparez les deux versions.'
+            ],
+            deliverable: 'Montrez les deux versions du guide et commentez les différences.'
+          }
+        ]
+      },
+      {
+        id: 'sciences',
+        name: 'Sciences',
+        icon: '🔬',
+        tools: 'Deep Research · Gem · Infographie',
+        gemini: [
+          {
+            title: 'Stratégies de différenciation en labo',
+            tool: 'Deep Research',
+            toolClass: 'deep-research',
+            objective: 'Utilisez Deep Research pour lancer une recherche approfondie sur les meilleures pratiques de différenciation en laboratoire de sciences au secondaire.',
+            steps: [
+              'Dans Gemini, activez le mode Deep Research.',
+              'Lancez la recherche : « Quelles sont les meilleures stratégies de différenciation pédagogique en laboratoire de sciences au secondaire, pour des élèves doués, des élèves avec difficultés langagières et des élèves TSA? Inclure des exemples concrets. »',
+              'Laissez Gemini explorer (ça peut prendre quelques minutes).',
+              'Évaluez le rapport : qualité des sources, applicabilité à votre contexte, idées nouvelles.'
+            ],
+            deliverable: 'Partagez la découverte la plus pertinente du rapport et votre évaluation de la qualité.'
+          },
+          {
+            title: 'Gem « Simplificateur scientifique »',
+            tool: 'Gem',
+            toolClass: 'gem',
+            objective: 'Créez un Gem qui prend un extrait de manuel de sciences et le transforme en versions adaptées à vos différents profils d\'élèves.',
+            steps: [
+              'Dans Gemini, créez un nouveau Gem.',
+              'Décrivez son rôle : prendre un texte scientifique et produire trois versions — <strong>Douance</strong> (vocabulaire enrichi, questions d\'approfondissement), <strong>Difficultés langagières</strong> (termes expliqués en mots simples, analogies du quotidien), <strong>TSA</strong> (structure prévisible, étapes explicites).',
+              'Testez avec une page de votre manuel sur un sujet au programme.',
+              'Ajustez les instructions du Gem selon les résultats.'
+            ],
+            deliverable: 'Montrez les trois versions d\'un même contenu scientifique.'
+          },
+          {
+            title: 'Infographie : Protocole de labo visuel',
+            tool: 'Infographie',
+            toolClass: 'image',
+            required: true,
+            objective: 'Générez une infographie illustrant les étapes d\'un protocole de laboratoire. Référence visuelle universelle, accessible à tous les profils.',
+            steps: [
+              'Demandez à Gemini de créer une infographie pour un protocole de labo ou la démarche expérimentale.',
+              'Précisez le public : élèves du secondaire, incluant des élèves avec difficultés de lecture.',
+              'Itérez : demandez moins de texte, des icônes plus claires, des étapes plus distinctes.',
+              'Essayez avec un labo spécifique que vous faites souvent.'
+            ],
+            deliverable: 'Présentez votre protocole visuel et dites si vous l\'afficheriez dans votre classe.'
+          }
+        ],
+        notebookLM: [
+          {
+            title: 'Briefing de labo accessible',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Uploadez un protocole de laboratoire et transformez-le en briefing simplifié + podcast audio.',
+            steps: [
+              'Créez un notebook et uploadez un protocole de laboratoire.',
+              'Demandez un document de briefing simplifié.',
+              'Générez un Audio Overview du protocole.',
+              'Réflexion : l\'Audio Overview pourrait-il remplacer la lecture du protocole pour un élève en difficulté?'
+            ],
+            deliverable: 'Faites écouter un extrait de l\'Audio Overview du protocole.'
+          },
+          {
+            title: 'Q&A scientifique à niveaux',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Testez si NotebookLM peut répondre à des questions de niveaux différents tout en restant fidèle à vos sources.',
+            steps: [
+              'Uploadez des textes sur un phénomène scientifique au programme.',
+              'Posez des questions comme le ferait un élève doué (« Quels sont les liens avec… »).',
+              'Posez des questions comme le ferait un élève en difficulté (« C\'est quoi exactement… »).',
+              'Comparez les réponses : restent-elles ancrées dans vos sources?'
+            ],
+            deliverable: 'Montrez la différence entre les réponses selon le niveau de question.'
+          }
+        ]
+      },
+      {
+        id: 'francais',
+        name: 'Français',
+        icon: '📝',
+        tools: 'Canvas · Apprentissage guidé · Infographie',
+        gemini: [
+          {
+            title: 'Questionnaire littéraire à trois niveaux',
+            tool: 'Canvas',
+            toolClass: 'canvas',
+            objective: 'Utilisez Canvas pour créer trois versions d\'un questionnaire d\'analyse littéraire, directement depuis un extrait au programme.',
+            steps: [
+              'Ouvrez Canvas dans Gemini.',
+              'Collez un extrait littéraire que vous utilisez en classe.',
+              'Demandez à Gemini de créer un questionnaire d\'analyse avec trois niveaux : <strong>Douance</strong> (questions ouvertes, interprétation, intertextualité), <strong>Régulier</strong> (questions guidées avec repères dans le texte), <strong>Difficultés langagières</strong> (questions à choix, reformulations simples, lexique fourni).',
+              'Itérez dans Canvas pour ajuster le niveau de chaque version.'
+            ],
+            deliverable: 'Montrez les trois versions du questionnaire et commentez leur pertinence.'
+          },
+          {
+            title: 'Tuteur de rédaction adaptatif',
+            tool: 'Apprentissage guidé',
+            toolClass: 'guided',
+            objective: 'Testez le mode apprentissage guidé de Gemini : il pose des questions plutôt que de donner les réponses. Observez comment il s\'adapte au profil de l\'élève.',
+            steps: [
+              'Activez le mode apprentissage guidé dans Gemini.',
+              'Simulez un élève doué qui veut raffiner son style d\'écriture. Observez les questions de Gemini.',
+              'Recommencez en simulant un élève avec difficultés langagières qui bloque sur la structure d\'un texte.',
+              'Comparez : Gemini adapte-t-il vraiment son approche selon le profil?'
+            ],
+            deliverable: 'Partagez les différences observées entre les deux « parcours » d\'apprentissage.'
+          },
+          {
+            title: 'Infographie : Aide-mémoire grammatical',
+            tool: 'Infographie',
+            toolClass: 'image',
+            required: true,
+            objective: 'Générez une infographie présentant visuellement une règle de grammaire complexe. Outil de référence mural pour les élèves visuels.',
+            steps: [
+              'Demandez à Gemini de créer une infographie pour une règle de grammaire (accord du participe passé, types de phrases, classes de mots…).',
+              'Précisez : « Pour des élèves du secondaire qui apprennent mieux avec des repères visuels. »',
+              'Itérez sur le design : ajustez les couleurs, la lisibilité, la quantité de texte.',
+              'Essayez une deuxième règle si le temps le permet.'
+            ],
+            deliverable: 'Présentez votre aide-mémoire visuel et dites si vous l\'utiliseriez en classe.'
+          }
+        ],
+        notebookLM: [
+          {
+            title: 'Guide d\'étude littéraire différencié',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Générez un guide d\'étude à partir d\'un texte littéraire, puis demandez une version adaptée.',
+            steps: [
+              'Créez un notebook et uploadez un texte littéraire au programme + vos notes d\'analyse.',
+              'Demandez un guide d\'étude.',
+              'Demandez ensuite une version avec vocabulaire simplifié et questions reformulées pour un élève avec difficultés langagières.',
+              'Comparez les deux versions : la simplification est-elle fidèle au contenu?'
+            ],
+            deliverable: 'Montrez les deux versions et commentez la qualité de la simplification.'
+          },
+          {
+            title: 'L\'œuvre en podcast',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Transformez un texte littéraire et vos notes en podcast audio. Outil d\'introduction pour les élèves qui ont du mal avec la lecture du texte original.',
+            steps: [
+              'Uploadez le texte et vos notes d\'analyse.',
+              'Générez un Audio Overview.',
+              'Écoutez : est-ce une bonne introduction auditive à l\'œuvre?',
+              'Pourrait-il servir de support pour un élève avec des difficultés de lecture?'
+            ],
+            deliverable: 'Faites écouter un extrait et partagez votre évaluation.'
+          }
+        ]
+      },
+      {
+        id: 'anglais',
+        name: 'Anglais (ESL)',
+        icon: '🌍',
+        tools: 'Gem · Deep Research · Infographie',
+        gemini: [
+          {
+            title: 'Gem « ESL Differentiator »',
+            tool: 'Gem',
+            toolClass: 'gem',
+            objective: 'Créez un Gem qui prend une activité de lecture ou d\'écriture en anglais et la décline en trois niveaux de difficulté.',
+            steps: [
+              'Créez un nouveau Gem dans Gemini.',
+              'Décrivez son rôle : décliner une activité ESL en trois niveaux — <strong>Enrichi</strong> (texte authentique, questions inférentielles, production libre), <strong>Régulier</strong> (texte adapté, questions explicites, production guidée), <strong>Adapté</strong> (texte simplifié, banque de mots, phrases-modèles).',
+              'Testez avec une activité de compréhension de lecture que vous utilisez en classe.',
+              'Ajustez les instructions du Gem pour améliorer les résultats.'
+            ],
+            deliverable: 'Montrez les trois versions d\'une même activité ESL.'
+          },
+          {
+            title: 'L\'IA pour différencier en ESL',
+            tool: 'Deep Research',
+            toolClass: 'deep-research',
+            objective: 'Lancez une recherche approfondie sur l\'utilisation de l\'IA pour la différenciation en classe d\'anglais langue seconde au secondaire.',
+            steps: [
+              'Activez Deep Research dans Gemini.',
+              'Lancez : « How can AI tools support differentiated instruction in ESL classrooms at the secondary level? Include concrete examples for gifted students, students with language difficulties, and students with ASD. »',
+              'Évaluez le rapport : pertinence pour le contexte québécois, idées applicables, mises en garde.',
+              'Notez les stratégies que vous aimeriez essayer.'
+            ],
+            deliverable: 'Partagez la stratégie la plus prometteuse et votre évaluation de la recherche.'
+          },
+          {
+            title: 'Infographie : Vocabulary builder thématique',
+            tool: 'Infographie',
+            toolClass: 'image',
+            required: true,
+            objective: 'Générez une infographie de vocabulaire anglais thématique avec visuels et exemples en contexte. Outil de référence pour les élèves avec difficultés langagières.',
+            steps: [
+              'Demandez à Gemini une infographie de vocabulaire sur un thème (environment, technology, food…).',
+              'Précisez : mots-clés avec visuels, définitions simples, exemples en contexte.',
+              'Itérez pour améliorer la lisibilité et l\'attrait visuel.',
+              'Demandez une deuxième infographie sur un thème différent si le temps le permet.'
+            ],
+            deliverable: 'Présentez votre infographie et expliquez comment vous l\'utiliseriez en classe.'
+          }
+        ],
+        notebookLM: [
+          {
+            title: 'Immersion auditive en anglais',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Uploadez des textes en anglais et générez un Audio Overview. Évaluez son potentiel comme outil d\'immersion auditive.',
+            steps: [
+              'Créez un notebook et uploadez des textes en anglais sur un thème au programme.',
+              'Générez un Audio Overview (en anglais).',
+              'Écoutez : le niveau de langue est-il adapté? Le débit est-il compréhensible?',
+              'Réflexion : outil d\'immersion utile pour différents niveaux d\'élèves?'
+            ],
+            deliverable: 'Faites écouter un extrait et commentez le potentiel pour l\'immersion.'
+          },
+          {
+            title: 'Quiz interactif depuis du vocabulaire',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Créez un notebook avec du vocabulaire thématique et utilisez le Q&A pour simuler un quiz adaptatif.',
+            steps: [
+              'Uploadez une liste de vocabulaire thématique que vous utilisez en classe.',
+              'Utilisez le chat pour poser des questions faciles puis des questions difficiles.',
+              'Observez : NotebookLM reste-t-il ancré dans votre vocabulaire source?',
+              'Essayez de lui demander de créer un quiz à différents niveaux.'
+            ],
+            deliverable: 'Montrez les questions générées et commentez la fidélité aux sources.'
+          }
+        ]
+      },
+      {
+        id: 'histoire',
+        name: 'Histoire',
+        icon: '📜',
+        tools: 'Apprentissage guidé · Canvas · Infographie',
+        gemini: [
+          {
+            title: 'Analyse de document historique adaptative',
+            tool: 'Apprentissage guidé',
+            toolClass: 'guided',
+            objective: 'Testez le mode apprentissage guidé avec un document historique. Gemini guide l\'élève plutôt que de donner les réponses. Comparez deux profils.',
+            steps: [
+              'Activez le mode apprentissage guidé.',
+              'Soumettez un document historique (source primaire ou extrait de manuel).',
+              'Simulez un <strong>élève doué</strong> : observez si Gemini pousse vers la pensée critique, la contextualisation, les perspectives multiples.',
+              'Recommencez en simulant un <strong>élève en difficulté</strong> : observez si Gemini simplifie, offre des indices, rappelle le contexte.',
+              'Comparez les deux parcours.'
+            ],
+            deliverable: 'Partagez les différences entre les deux parcours et votre avis sur la qualité de l\'adaptation.'
+          },
+          {
+            title: 'Dossier documentaire différencié',
+            tool: 'Canvas',
+            toolClass: 'canvas',
+            objective: 'Utilisez Canvas pour créer un dossier documentaire complet sur un événement au programme, avec des textes à différents niveaux de lecture.',
+            steps: [
+              'Ouvrez Canvas et choisissez un événement au programme (Révolution tranquille, Conquête, Industrialisation…).',
+              'Demandez à Gemini de produire des textes à différents niveaux de lecture sur cet événement.',
+              'Ajoutez des questions d\'analyse adaptées à chaque profil.',
+              'Demandez un organisateur graphique pour structurer les idées.',
+              'Itérez dans Canvas pour raffiner le dossier.'
+            ],
+            deliverable: 'Montrez votre dossier documentaire avec ses différents niveaux de lecture.'
+          },
+          {
+            title: 'Infographie : Ligne du temps visuelle',
+            tool: 'Infographie',
+            toolClass: 'image',
+            required: true,
+            objective: 'Générez une infographie chronologique d\'une période au programme. Repère visuel pour les élèves qui ont du mal avec le texte.',
+            steps: [
+              'Demandez à Gemini de créer une ligne du temps infographique pour une période au programme.',
+              'Précisez : dates clés, événements principaux, visuels, peu de texte.',
+              'Itérez : ajustez la densité d\'information, les couleurs, la lisibilité.',
+              'Essayez une période différente si le temps le permet.'
+            ],
+            deliverable: 'Présentez votre ligne du temps et dites si elle serait utile comme référence murale.'
+          }
+        ],
+        notebookLM: [
+          {
+            title: 'Podcast historique maison',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Uploadez des documents sur une période et générez un « podcast historique ». Outil d\'accessibilité pour les élèves avec difficultés de lecture.',
+            steps: [
+              'Créez un notebook et uploadez des documents sur une période au programme.',
+              'Générez un Audio Overview.',
+              'Écoutez : le contenu est-il fidèle aux sources? Le ton est-il engageant?',
+              'Pourrait-il rendre le contenu accessible à un élève qui a du mal avec la lecture?'
+            ],
+            deliverable: 'Faites écouter un extrait de votre « podcast historique ».'
+          },
+          {
+            title: 'Sources historiques avec Q&A différencié',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Uploadez plusieurs documents sur un même événement et testez le Q&A avec des questions de niveaux différents.',
+            steps: [
+              'Uploadez plusieurs sources sur un même événement historique.',
+              'Posez des questions d\'analyse de niveau avancé (causes profondes, perspectives multiples).',
+              'Posez des questions de niveau de base (qui, quoi, quand, où).',
+              'Vérifiez : NotebookLM reste-t-il fidèle à vos sources dans les deux cas?'
+            ],
+            deliverable: 'Montrez la différence entre les réponses selon le niveau de question.'
+          }
+        ]
+      },
+      {
+        id: 'geographie',
+        name: 'Géographie',
+        icon: '🗺️',
+        tools: 'Deep Research · Gem · Infographie',
+        gemini: [
+          {
+            title: 'Approfondissement d\'un enjeu territorial',
+            tool: 'Deep Research',
+            toolClass: 'deep-research',
+            objective: 'Utilisez Deep Research pour explorer en profondeur un enjeu territorial au programme et obtenir des pistes de différenciation.',
+            steps: [
+              'Activez Deep Research dans Gemini.',
+              'Lancez une recherche sur un enjeu territorial (gestion de l\'eau, urbanisation, changements climatiques…).',
+              'Demandez que le rapport inclue : sources à différents niveaux de complexité, données statistiques utilisables en classe, et pistes de différenciation selon les profils d\'élèves.',
+              'Évaluez le rapport : utiliseriez-vous ces ressources en classe?'
+            ],
+            deliverable: 'Partagez les ressources les plus pertinentes trouvées par Deep Research.'
+          },
+          {
+            title: 'Gem « Géo-Adaptateur »',
+            tool: 'Gem',
+            toolClass: 'gem',
+            objective: 'Créez un Gem qui prend une description géographique et la reformule pour différents profils d\'élèves.',
+            steps: [
+              'Créez un nouveau Gem.',
+              'Décrivez son rôle : adapter un contenu de géographie en trois versions — <strong>Douance</strong> (liens avec l\'actualité, comparaisons internationales, questionnement critique), <strong>Difficultés langagières</strong> (vocabulaire simplifié, schémas suggérés, exemples du quotidien), <strong>TSA</strong> (structure prévisible, étape par étape, pas d\'implicite).',
+              'Testez avec la description d\'un territoire à l\'étude.',
+              'Affinez les instructions du Gem.'
+            ],
+            deliverable: 'Montrez les trois versions d\'un même contenu géographique.'
+          },
+          {
+            title: 'Infographie : Portrait d\'un territoire',
+            tool: 'Infographie',
+            toolClass: 'image',
+            required: true,
+            objective: 'Générez une infographie présentant les caractéristiques clés d\'un territoire à l\'étude. Outil de référence visuel universel.',
+            steps: [
+              'Demandez à Gemini de créer une infographie pour un territoire au programme (population, climat, ressources, enjeux).',
+              'Précisez que l\'infographie doit être lisible par tous les élèves, y compris ceux avec des difficultés de lecture.',
+              'Itérez sur le design : quantité de texte, clarté des visuels, structure de l\'information.',
+              'Essayez un deuxième territoire si le temps le permet.'
+            ],
+            deliverable: 'Présentez votre portrait de territoire infographique.'
+          }
+        ],
+        notebookLM: [
+          {
+            title: 'Portrait de territoire en audio',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Uploadez des documents sur un territoire et transformez-les en podcast audio de révision.',
+            steps: [
+              'Créez un notebook avec des articles et documents sur un territoire à l\'étude.',
+              'Générez un Audio Overview.',
+              'Écoutez : le portrait est-il complet? Fidèle aux sources?',
+              'Réflexion : utile comme outil de révision accessible pour tous les profils?'
+            ],
+            deliverable: 'Faites écouter un extrait et partagez votre évaluation.'
+          },
+          {
+            title: 'Q&A différencié sur un enjeu',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Testez le Q&A de NotebookLM avec des questions de niveaux différents sur un enjeu territorial.',
+            steps: [
+              'Uploadez des sources sur un enjeu territorial au programme.',
+              'Posez des questions de niveau avancé (« Quels sont les arguments économiques vs environnementaux? »).',
+              'Posez des questions de niveau adapté (« C\'est quoi le problème principal? »).',
+              'Comparez les réponses et vérifiez l\'ancrage dans les sources.'
+            ],
+            deliverable: 'Montrez la différence entre les réponses par niveau de question.'
+          }
+        ]
+      },
+      {
+        id: 'art',
+        name: 'Art',
+        icon: '🎨',
+        tools: 'Canvas · Apprentissage guidé · Infographie',
+        gemini: [
+          {
+            title: 'Brief de projet artistique différencié',
+            tool: 'Canvas',
+            toolClass: 'canvas',
+            objective: 'Utilisez Canvas pour créer trois versions d\'un brief de projet artistique adapté à différents profils d\'élèves.',
+            steps: [
+              'Ouvrez Canvas et décrivez un projet artistique (affiche engagée, autoportrait, sculpture, gravure…).',
+              'Demandez trois versions du brief : <strong>Douance</strong> (contraintes techniques avancées, liberté créative, références complexes), <strong>Régulier</strong> (étapes guidées, exemples visuels, critères clairs), <strong>Adapté</strong> (consignes ultra-explicites, choix limités, démonstration étape par étape).',
+              'Itérez dans Canvas pour ajuster chaque version.',
+              'Vérifiez que les trois versions mènent à une production artistique de qualité.'
+            ],
+            deliverable: 'Montrez les trois versions du brief de projet.'
+          },
+          {
+            title: 'Critique d\'art interactive',
+            tool: 'Apprentissage guidé',
+            toolClass: 'guided',
+            objective: 'Utilisez le mode apprentissage guidé pour simuler une discussion critique sur une œuvre d\'art, adaptée au profil de l\'élève.',
+            steps: [
+              'Activez le mode apprentissage guidé.',
+              'Soumettez une reproduction d\'œuvre (décrivez-la ou uploadez une image).',
+              'Simulez un <strong>élève doué</strong> : observez si Gemini pose des questions ouvertes et poussées sur l\'interprétation.',
+              'Simulez un <strong>élève en difficulté</strong> : observez si Gemini offre des choix, des indices visuels, des pistes.',
+              'Comparez les deux parcours de discussion.'
+            ],
+            deliverable: 'Partagez les différences entre les deux discussions et votre évaluation.'
+          },
+          {
+            title: 'Infographie : Fiche technique artistique',
+            tool: 'Infographie',
+            toolClass: 'image',
+            required: true,
+            objective: 'Générez une infographie présentant une technique artistique. Référence visuelle murale accessible à tous les élèves.',
+            steps: [
+              'Demandez à Gemini de créer une infographie sur une technique (couleurs complémentaires, perspective, techniques de gravure, un mouvement artistique…).',
+              'Précisez : peu de texte, beaucoup de visuels, adapté pour le secondaire.',
+              'Itérez sur le prompt pour améliorer l\'aspect visuel et la clarté.',
+              'Essayez avec une deuxième technique si le temps le permet.'
+            ],
+            deliverable: 'Présentez votre fiche technique et imaginez-la affichée dans votre classe.'
+          }
+        ],
+        notebookLM: [
+          {
+            title: 'Mouvement artistique en podcast',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Uploadez des textes sur un mouvement artistique et générez un Audio Overview. Outil d\'introduction auditive.',
+            steps: [
+              'Créez un notebook et uploadez des textes sur un mouvement artistique (impressionnisme, art contemporain, street art…).',
+              'Générez un Audio Overview.',
+              'Écoutez : est-ce une bonne introduction pour un élève qui apprend mieux en écoutant?',
+              'Réflexion : pourriez-vous l\'utiliser en début de cours comme mise en contexte?'
+            ],
+            deliverable: 'Faites écouter un extrait et partagez votre évaluation.'
+          },
+          {
+            title: 'Guide de visite / guide d\'étude',
+            tool: 'NotebookLM',
+            toolClass: 'nlm',
+            objective: 'Générez un guide d\'étude sur un artiste ou un mouvement, puis demandez une version avec vocabulaire adapté.',
+            steps: [
+              'Uploadez des textes sur un artiste ou un mouvement au programme.',
+              'Demandez un guide d\'étude.',
+              'Demandez une version avec vocabulaire adapté et repères visuels suggérés.',
+              'Comparez les deux versions.'
+            ],
+            deliverable: 'Montrez les deux versions et commentez les différences.'
+          }
+        ]
+      }
+    ];
+
+    // ===== RENDERING =====
+
+    function renderLanding() {
+      const grid = document.getElementById('disciplines-grid');
+      grid.innerHTML = disciplines.map(d => `
+        <button class="discipline-card" onclick="showDiscipline('${d.id}')">
+          <span class="icon">${d.icon}</span>
+          <span class="name">${d.name}</span>
+          <span class="tools">${d.tools}</span>
+        </button>
+      `).join('');
+    }
+
+    function renderDiscipline(id) {
+      const d = disciplines.find(x => x.id === id);
+      if (!d) return;
+
+      const container = document.getElementById('detail-content');
+
+      const toolDescriptions = {
+        'gem': '💎 Les Gems sont des assistants IA personnalisés que vous créez avec des instructions permanentes.',
+        'canvas': '📄 Canvas est un espace de co-édition dans Gemini pour créer et itérer sur des documents.',
+        'deep-research': '🔍 Deep Research lance une recherche approfondie et produit un rapport détaillé avec sources.',
+        'guided': '🎓 L\'apprentissage guidé fait de Gemini un tuteur qui pose des questions plutôt que de donner les réponses.',
+        'image': '🖼️ La génération d\'images permet de créer des infographies et visuels directement dans Gemini.',
+        'nlm': '📓 NotebookLM analyse vos propres documents et génère des podcasts, guides d\'étude et Q&A ancrés dans vos sources.'
+      };
+
+      // Collect unique tools used
+      const usedTools = new Set();
+      d.gemini.forEach(c => usedTools.add(c.toolClass));
+      d.notebookLM.forEach(c => usedTools.add(c.toolClass));
+
+      container.innerHTML = `
+        <div class="detail-header">
+          <span class="icon">${d.icon}</span>
+          <h2>${d.name}</h2>
+        </div>
+        <p class="detail-description">Choisissez 2 défis Gemini + 1 défi NotebookLM. Le défi Infographie (défi 3) est obligatoire pour tous.</p>
+
+        <div class="tools-legend">
+          ${Array.from(usedTools).map(t => {
+            const colors = {
+              'gem': 'var(--gem)', 'canvas': 'var(--canvas)',
+              'deep-research': 'var(--deep-research)', 'guided': 'var(--guided)',
+              'image': 'var(--image)', 'nlm': 'var(--nlm)'
+            };
+            return `<span class="legend-item" title="${toolDescriptions[t] || ''}">
+              <span class="legend-dot" style="background:${colors[t]}"></span>
+              ${toolDescriptions[t] ? toolDescriptions[t].split(' ').slice(1, 4).join(' ') : t}
+            </span>`;
+          }).join('')}
+        </div>
+
+        <h3 class="section-title gemini">✨ Défis Gemini</h3>
+        <div class="challenges-grid">
+          ${d.gemini.map((c, i) => renderChallenge(c, i + 1)).join('')}
+        </div>
+
+        <h3 class="section-title notebooklm">📓 Défis NotebookLM</h3>
+        <div class="challenges-grid">
+          ${d.notebookLM.map((c, i) => renderChallenge(c, String.fromCharCode(65 + i))).join('')}
+        </div>
+      `;
+    }
+
+    function renderChallenge(c, number) {
+      const toolLabels = {
+        'gem': '💎 Gem',
+        'canvas': '📄 Canvas',
+        'deep-research': '🔍 Deep Research',
+        'guided': '🎓 Apprentissage guidé',
+        'image': '🖼️ Infographie',
+        'nlm': '📓 NotebookLM'
+      };
+
+      return `
+        <article class="challenge-card${c.required ? ' required' : ''}">
+          <div class="card-header">
+            <span class="card-title">Défi ${number} — ${c.title}</span>
+            <span class="tool-badge ${c.toolClass}">${toolLabels[c.toolClass] || c.tool}</span>
+            ${c.required ? '<span class="tool-badge required-badge">⭐ Obligatoire</span>' : ''}
+          </div>
+          <p class="card-objective">${c.objective}</p>
+          <ol class="card-steps">
+            ${c.steps.map(s => `<li>${s}</li>`).join('')}
+          </ol>
+          <div class="card-deliverable">
+            <span class="deliverable-icon">🎯</span>
+            <span><strong>Livrable :</strong> ${c.deliverable}</span>
+          </div>
+        </article>
+      `;
+    }
+
+    // ===== NAVIGATION =====
+
+    function showLanding() {
+      document.getElementById('detail').classList.remove('active');
+      document.getElementById('landing').classList.add('active');
+      document.getElementById('fab').classList.remove('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showDiscipline(id) {
+      renderDiscipline(id);
+      document.getElementById('landing').classList.remove('active');
+      document.getElementById('detail').classList.add('active');
+      document.getElementById('fab').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openModal() {
+      document.getElementById('modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close')) return;
+      document.getElementById('modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ===== INIT =====
+    renderLanding();
+  </script>
+</body>
+</html>
