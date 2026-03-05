@@ -1115,13 +1115,13 @@
 
       const container = document.getElementById('detail-content');
 
-      const toolDescriptions = {
-        'gem': '💎 Les Gems sont des assistants IA personnalisés que vous créez avec des instructions permanentes.',
-        'canvas': '📄 Canvas est un espace de co-édition dans Gemini pour créer et itérer sur des documents.',
-        'deep-research': '🔍 Deep Research lance une recherche approfondie et produit un rapport détaillé avec sources.',
-        'guided': '🎓 L\'apprentissage guidé fait de Gemini un tuteur qui pose des questions plutôt que de donner les réponses.',
-        'image': '🖼️ La génération d\'images permet de créer des infographies et visuels directement dans Gemini.',
-        'nlm': '📓 NotebookLM analyse vos propres documents et génère des podcasts, guides d\'étude et Q&A ancrés dans vos sources.'
+      const toolLegend = {
+        'gem': { label: '💎 Gem', desc: 'Assistant IA personnalisé avec des instructions permanentes' },
+        'canvas': { label: '📄 Canvas', desc: 'Espace de co-édition pour créer et itérer sur des documents' },
+        'deep-research': { label: '🔍 Deep Research', desc: 'Recherche approfondie avec rapport détaillé et sources' },
+        'guided': { label: '🎓 Apprentissage guidé', desc: 'Gemini devient tuteur et pose des questions plutôt que donner les réponses' },
+        'image': { label: '🖼️ Infographie', desc: 'Génération d\'images et d\'infographies directement dans Gemini' },
+        'nlm': { label: '📓 NotebookLM', desc: 'Analyse vos documents et génère podcasts, guides d\'étude et Q&A' }
       };
 
       // Collect unique tools used
@@ -1143,9 +1143,10 @@
               'deep-research': 'var(--deep-research)', 'guided': 'var(--guided)',
               'image': 'var(--image)', 'nlm': 'var(--nlm)'
             };
-            return `<span class="legend-item" title="${toolDescriptions[t] || ''}">
+            const tool = toolLegend[t];
+            return `<span class="legend-item">
               <span class="legend-dot" style="background:${colors[t]}"></span>
-              ${toolDescriptions[t] ? toolDescriptions[t].split(' ').slice(1, 4).join(' ') : t}
+              <strong>${tool.label}</strong> — ${tool.desc}
             </span>`;
           }).join('')}
         </div>
