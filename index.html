@@ -1191,20 +1191,31 @@
 
     // ===== NAVIGATION =====
 
-    function showLanding() {
+    function showLanding(fromPopState) {
       document.getElementById('detail').classList.remove('active');
       document.getElementById('landing').classList.add('active');
       document.getElementById('fab').classList.remove('visible');
+      if (!fromPopState) history.pushState({ view: 'landing' }, '', window.location.pathname);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function showDiscipline(id) {
+    function showDiscipline(id, fromPopState) {
       renderDiscipline(id);
       document.getElementById('landing').classList.remove('active');
       document.getElementById('detail').classList.add('active');
       document.getElementById('fab').classList.add('visible');
+      if (!fromPopState) history.pushState({ view: 'discipline', id }, '', window.location.pathname + '#' + id);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    window.addEventListener('popstate', e => {
+      const state = e.state;
+      if (state && state.view === 'discipline') {
+        showDiscipline(state.id, true);
+      } else {
+        showLanding(true);
+      }
+    });
 
     function openModal() {
       document.getElementById('modal').classList.add('active');
@@ -1223,6 +1234,11 @@
 
     // ===== INIT =====
     renderLanding();
+    history.replaceState({ view: 'landing' }, '', window.location.pathname);
+    const initHash = window.location.hash.slice(1);
+    if (initHash && disciplines.find(d => d.id === initHash)) {
+      showDiscipline(initHash);
+    }
   </script>
 </body>
 </html>
