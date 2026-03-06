@@ -580,7 +580,7 @@
             toolClass: 'canvas',
             objective: 'Utilisez l\'outil Canvas de Gemini pour co-créer et itérer sur un exercice de résolution de problèmes, directement dans l\'interface.',
             steps: [
-              'Cliquez sur le bouton Canvas dans Gemini et demandez : « Je voudrais travailler ce texte dans Canvas : » suivi d\'un exercice existant de résolution de problèmes.',
+              'Cliquez sur le bouton Canvas dans Gemini et collez un exercice existant de résolution de problèmes.',
               'Demandez à Gemini d\'ajouter des <strong>indices progressifs</strong> pour les élèves en difficulté.',
               'Demandez ensuite des <strong>prolongements ouverts</strong> pour les élèves doués.',
               'Faites ajuster les consignes pour un élève TSA : consignes explicites, sans sous-entendus.',
@@ -595,7 +595,7 @@
             required: true,
             objective: 'Demandez à Gemini de générer une infographie qui explique visuellement un concept mathématique. Idéal comme référence murale pour les élèves visuels.',
             steps: [
-              'Dans Gemini, demandez : « Crée une infographie claire et colorée qui explique [concept] pour des élèves du secondaire. »',
+              'Cliquez sur le bouton « créer une image » dans Gemini et demandez : « Crée une infographie claire et colorée qui explique [concept] pour des élèves du secondaire. »',
               'Essayez avec : les fractions, Pythagore, les fonctions, les probabilités…',
               'Itérez sur le prompt pour améliorer la clarté et le style visuel.',
               'Demandez des ajustements : plus grand texte, couleurs contrastées, moins de texte…'
@@ -611,7 +611,7 @@
             objective: 'Transformez vos notes de cours en un résumé audio que vos élèves pourraient écouter en complément ou en révision.',
             steps: [
               'Ouvrez NotebookLM et créez un nouveau notebook.',
-              'Uploadez vos notes de cours sur un chapitre (PDF, Google Doc, ou copiez-collez).',
+              'Téléversez vos notes de cours sur un chapitre (PDF, Google Doc, ou copiez-collez).',
               'Cliquez sur « Aperçu audio » pour générer un podcast.',
               'Écoutez le résultat : est-ce fidèle? Utile pour un élève avec des difficultés de lecture?'
             ],
@@ -623,7 +623,7 @@
             toolClass: 'nlm',
             objective: 'Générez un guide d\'étude à partir de vos documents, puis demandez une version adaptée pour un élève avec des difficultés langagières.',
             steps: [
-              'Uploadez un examen ou une série d\'exercices dans votre notebook.',
+              'Téléversez un examen ou une série d\'exercices dans votre notebook.',
               'Demandez à NotebookLM de générer un guide d\'étude.',
               'Ensuite, demandez-lui une version simplifiée pour un élève avec difficultés langagières.',
               'Comparez les deux versions.'
@@ -671,7 +671,7 @@
             required: true,
             objective: 'Générez une infographie illustrant les étapes d\'un protocole de laboratoire. Référence visuelle universelle, accessible à tous les profils.',
             steps: [
-              'Demandez à Gemini de créer une infographie pour un protocole de labo ou la démarche expérimentale.',
+              'Cliquez sur le bouton « créer une image » dans Gemini et demandez une infographie pour un protocole de labo ou la démarche expérimentale.',
               'Précisez le public : élèves du secondaire, incluant des élèves avec difficultés de lecture.',
               'Itérez : demandez moins de texte, des icônes plus claires, des étapes plus distinctes.',
               'Essayez avec un labo spécifique que vous faites souvent.'
@@ -684,10 +684,10 @@
             title: 'Briefing de labo accessible',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Uploadez un protocole de laboratoire et transformez-le en briefing simplifié + podcast audio.',
+            objective: 'Téléversez un protocole de laboratoire et transformez-le en jeu de diapositives + podcast audio.',
             steps: [
-              'Créez un notebook et uploadez un protocole de laboratoire.',
-              'Demandez un document de briefing simplifié.',
+              'Créez un notebook et téléversez un protocole de laboratoire.',
+              'Demandez un jeu de diapositives.',
               'Générez un Aperçu audio du protocole.',
               'Réflexion : l\'Aperçu audio pourrait-il remplacer la lecture du protocole pour un élève en difficulté?'
             ],
@@ -699,7 +699,8 @@
             toolClass: 'nlm',
             objective: 'Testez si NotebookLM peut répondre à des questions de niveaux différents tout en restant fidèle à vos sources.',
             steps: [
-              'Uploadez des textes sur un phénomène scientifique au programme.',
+              'Téléversez des textes sur un phénomène scientifique au programme ou joignez des sites pertinents (ex. Allô prof).',
+              'Dans le bouton de réglage de la colonne du centre, réglez le clavardage sur « guide d\'apprentissage ».',
               'Posez des questions comme le ferait un élève doué (« Quels sont les liens avec… »).',
               'Posez des questions comme le ferait un élève en difficulté (« C\'est quoi exactement… »).',
               'Comparez les réponses : restent-elles ancrées dans vos sources?'
@@ -746,7 +747,7 @@
             required: true,
             objective: 'Générez une infographie présentant visuellement une règle de grammaire complexe. Outil de référence mural pour les élèves visuels.',
             steps: [
-              'Demandez à Gemini de créer une infographie pour une règle de grammaire (accord du participe passé, types de phrases, classes de mots…).',
+              'Cliquez sur le bouton « créer une image » dans Gemini et demandez une infographie pour une règle de grammaire (accord du participe passé, types de phrases, classes de mots…).',
               'Précisez : « Pour des élèves du secondaire qui apprennent mieux avec des repères visuels. »',
               'Itérez sur le design : ajustez les couleurs, la lisibilité, la quantité de texte.',
               'Essayez une deuxième règle si le temps le permet.'
@@ -756,30 +757,30 @@
         ],
         notebookLM: [
           {
-            title: 'Guide d\'étude littéraire différencié',
+            title: 'Questionnaire ou cartes-éclair littéraires',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Générez un guide d\'étude à partir d\'un texte littéraire, puis demandez une version adaptée.',
+            objective: 'À partir d\'un texte littéraire, générez un questionnaire ou des cartes-éclair pour la révision, puis demandez une version adaptée.',
             steps: [
-              'Créez un notebook et uploadez un texte littéraire au programme + vos notes d\'analyse.',
-              'Demandez un guide d\'étude.',
+              'Créez un notebook et téléversez un texte littéraire au programme + vos notes d\'analyse.',
+              'Demandez à NotebookLM de générer un questionnaire ou des cartes-éclair.',
               'Demandez ensuite une version avec vocabulaire simplifié et questions reformulées pour un élève avec difficultés langagières.',
               'Comparez les deux versions : la simplification est-elle fidèle au contenu?'
             ],
             deliverable: 'Montrez les deux versions et commentez la qualité de la simplification.'
           },
           {
-            title: 'L\'œuvre en podcast',
+            title: 'L\'œuvre en vidéo',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Transformez un texte littéraire et vos notes en podcast audio. Outil d\'introduction pour les élèves qui ont du mal avec la lecture du texte original.',
+            objective: 'Transformez un texte littéraire et vos notes en vidéo. Outil d\'introduction pour les élèves qui ont du mal avec la lecture du texte original.',
             steps: [
-              'Uploadez le texte et vos notes d\'analyse.',
-              'Générez un Aperçu audio.',
-              'Écoutez : est-ce une bonne introduction auditive à l\'œuvre?',
+              'Téléversez le texte et vos notes d\'analyse.',
+              'Générez un Aperçu vidéo.',
+              'Regardez : est-ce une bonne introduction à l\'œuvre?',
               'Pourrait-il servir de support pour un élève avec des difficultés de lecture?'
             ],
-            deliverable: 'Faites écouter un extrait et partagez votre évaluation.'
+            deliverable: 'Faites regarder un extrait et partagez votre évaluation.'
           }
         ]
       },
@@ -822,7 +823,7 @@
             required: true,
             objective: 'Générez une infographie de vocabulaire anglais thématique avec visuels et exemples en contexte. Outil de référence pour les élèves avec difficultés langagières.',
             steps: [
-              'Demandez à Gemini une infographie de vocabulaire sur un thème (environment, technology, food…).',
+              'Cliquez sur le bouton « créer une image » dans Gemini et demandez une infographie de vocabulaire sur un thème (environment, technology, food…).',
               'Précisez : mots-clés avec visuels, définitions simples, exemples en contexte.',
               'Itérez pour améliorer la lisibilité et l\'attrait visuel.',
               'Demandez une deuxième infographie sur un thème différent si le temps le permet.'
@@ -835,9 +836,9 @@
             title: 'Immersion auditive en anglais',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Uploadez des textes en anglais et générez un Aperçu audio. Évaluez son potentiel comme outil d\'immersion auditive.',
+            objective: 'Téléversez des textes en anglais et générez un Aperçu audio. Évaluez son potentiel comme outil d\'immersion auditive.',
             steps: [
-              'Créez un notebook et uploadez des textes en anglais sur un thème au programme.',
+              'Créez un notebook et téléversez des textes en anglais sur un thème au programme.',
               'Générez un Aperçu audio (en anglais).',
               'Écoutez : le niveau de langue est-il adapté? Le débit est-il compréhensible?',
               'Réflexion : outil d\'immersion utile pour différents niveaux d\'élèves?'
@@ -845,17 +846,17 @@
             deliverable: 'Faites écouter un extrait et commentez le potentiel pour l\'immersion.'
           },
           {
-            title: 'Quiz interactif depuis du vocabulaire',
+            title: 'Jeu de diapositives depuis du vocabulaire',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Créez un notebook avec du vocabulaire thématique et utilisez le Q&A pour simuler un quiz adaptatif.',
+            objective: 'Créez un notebook avec du vocabulaire thématique et demandez à NotebookLM de générer un jeu de diapositives.',
             steps: [
-              'Uploadez une liste de vocabulaire thématique que vous utilisez en classe.',
-              'Utilisez le chat pour poser des questions faciles puis des questions difficiles.',
-              'Observez : NotebookLM reste-t-il ancré dans votre vocabulaire source?',
-              'Essayez de lui demander de créer un quiz à différents niveaux.'
+              'Téléversez une liste de vocabulaire thématique que vous utilisez en classe.',
+              'Demandez à NotebookLM de créer un jeu de diapositives à partir de ce vocabulaire.',
+              'Évaluez le résultat : est-ce utilisable en classe? Le contenu est-il fidèle à vos sources?',
+              'Essayez de lui demander une version adaptée pour des élèves avec difficultés langagières.'
             ],
-            deliverable: 'Montrez les questions générées et commentez la fidélité aux sources.'
+            deliverable: 'Montrez le jeu de diapositives généré et commentez son utilité.'
           }
         ]
       },
@@ -899,7 +900,7 @@
             required: true,
             objective: 'Générez une infographie chronologique d\'une période au programme. Repère visuel pour les élèves qui ont du mal avec le texte.',
             steps: [
-              'Demandez à Gemini de créer une ligne du temps infographique pour une période au programme.',
+              'Cliquez sur le bouton « créer une image » dans Gemini et demandez une ligne du temps infographique pour une période au programme.',
               'Précisez : dates clés, événements principaux, visuels, peu de texte.',
               'Itérez : ajustez la densité d\'information, les couleurs, la lisibilité.',
               'Essayez une période différente si le temps le permet.'
@@ -912,9 +913,9 @@
             title: 'Podcast historique maison',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Uploadez des documents sur une période et générez un « podcast historique ». Outil d\'accessibilité pour les élèves avec difficultés de lecture.',
+            objective: 'Téléversez des documents sur une période et générez un « podcast historique ». Outil d\'accessibilité pour les élèves avec difficultés de lecture.',
             steps: [
-              'Créez un notebook et uploadez des documents sur une période au programme.',
+              'Créez un notebook et téléversez des documents sur une période au programme.',
               'Générez un Aperçu audio.',
               'Écoutez : le contenu est-il fidèle aux sources? Le ton est-il engageant?',
               'Pourrait-il rendre le contenu accessible à un élève qui a du mal avec la lecture?'
@@ -922,17 +923,17 @@
             deliverable: 'Faites écouter un extrait de votre « podcast historique ».'
           },
           {
-            title: 'Sources historiques avec Q&A différencié',
+            title: 'Carte mentale d\'un événement historique',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Uploadez plusieurs documents sur un même événement et testez le Q&A avec des questions de niveaux différents.',
+            objective: 'Téléversez plusieurs documents sur un même événement et demandez à NotebookLM de générer une carte mentale.',
             steps: [
-              'Uploadez plusieurs sources sur un même événement historique.',
-              'Posez des questions d\'analyse de niveau avancé (causes profondes, perspectives multiples).',
-              'Posez des questions de niveau de base (qui, quoi, quand, où).',
-              'Vérifiez : NotebookLM reste-t-il fidèle à vos sources dans les deux cas?'
+              'Téléversez plusieurs sources sur un même événement historique.',
+              'Demandez à NotebookLM de générer une carte mentale de l\'événement.',
+              'Évaluez le résultat : les liens entre les concepts sont-ils pertinents? La carte est-elle fidèle à vos sources?',
+              'Réflexion : cette carte mentale pourrait-elle aider un élève en difficulté à structurer sa compréhension de l\'événement?'
             ],
-            deliverable: 'Montrez la différence entre les réponses selon le niveau de question.'
+            deliverable: 'Montrez la carte mentale générée et commentez son utilité pour la différenciation.'
           }
         ]
       },
@@ -975,7 +976,7 @@
             required: true,
             objective: 'Générez une infographie présentant les caractéristiques clés d\'un territoire à l\'étude. Outil de référence visuel universel.',
             steps: [
-              'Demandez à Gemini de créer une infographie pour un territoire au programme (population, climat, ressources, enjeux).',
+              'Cliquez sur le bouton « créer une image » dans Gemini et demandez une infographie pour un territoire au programme (population, climat, ressources, enjeux).',
               'Précisez que l\'infographie doit être lisible par tous les élèves, y compris ceux avec des difficultés de lecture.',
               'Itérez sur le design : quantité de texte, clarté des visuels, structure de l\'information.',
               'Essayez un deuxième territoire si le temps le permet.'
@@ -985,30 +986,30 @@
         ],
         notebookLM: [
           {
-            title: 'Portrait de territoire en audio',
+            title: 'Portrait de territoire en vidéo',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Uploadez des documents sur un territoire et transformez-les en podcast audio de révision.',
+            objective: 'Téléversez des documents sur un territoire et transformez-les en vidéo de révision.',
             steps: [
               'Créez un notebook avec des articles et documents sur un territoire à l\'étude.',
-              'Générez un Aperçu audio.',
-              'Écoutez : le portrait est-il complet? Fidèle aux sources?',
+              'Générez un Aperçu vidéo.',
+              'Regardez : le portrait est-il complet? Fidèle aux sources?',
               'Réflexion : utile comme outil de révision accessible pour tous les profils?'
             ],
-            deliverable: 'Faites écouter un extrait et partagez votre évaluation.'
+            deliverable: 'Faites regarder un extrait et partagez votre évaluation.'
           },
           {
-            title: 'Q&A différencié sur un enjeu',
+            title: 'Questionnaire différencié sur un enjeu',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Testez le Q&A de NotebookLM avec des questions de niveaux différents sur un enjeu territorial.',
+            objective: 'Demandez à NotebookLM de générer un questionnaire sur un enjeu territorial, puis une version adaptée.',
             steps: [
-              'Uploadez des sources sur un enjeu territorial au programme.',
-              'Posez des questions de niveau avancé (« Quels sont les arguments économiques vs environnementaux? »).',
-              'Posez des questions de niveau adapté (« C\'est quoi le problème principal? »).',
-              'Comparez les réponses et vérifiez l\'ancrage dans les sources.'
+              'Téléversez des sources sur un enjeu territorial au programme.',
+              'Demandez à NotebookLM de générer un questionnaire sur cet enjeu.',
+              'Demandez ensuite une version adaptée pour un élève avec difficultés langagières.',
+              'Comparez les deux versions et vérifiez l\'ancrage dans les sources.'
             ],
-            deliverable: 'Montrez la différence entre les réponses par niveau de question.'
+            deliverable: 'Montrez les deux versions du questionnaire et commentez les différences.'
           }
         ]
       },
@@ -1019,17 +1020,17 @@
         tools: 'Canvas · Apprentissage guidé · Infographie',
         gemini: [
           {
-            title: 'Brief de projet artistique différencié',
+            title: 'Module interactif sur la théorie des couleurs',
             tool: 'Canvas',
             toolClass: 'canvas',
-            objective: 'Utilisez Canvas pour créer trois versions d\'un brief de projet artistique adapté à différents profils d\'élèves.',
+            objective: 'Utilisez Canvas pour créer un module interactif permettant aux élèves d\'apprendre la théorie des couleurs.',
             steps: [
-              'Cliquez sur le bouton Canvas dans Gemini et demandez : « Je voudrais créer un brief de projet artistique dans Canvas pour [affiche engagée, autoportrait, sculpture, gravure…]. »',
-              'Demandez trois versions du brief : <strong>Douance</strong> (contraintes techniques avancées, liberté créative, références complexes), <strong>Régulier</strong> (étapes guidées, exemples visuels, critères clairs), <strong>Adapté</strong> (consignes ultra-explicites, choix limités, démonstration étape par étape).',
-              'Itérez dans Canvas pour ajuster chaque version.',
-              'Vérifiez que les trois versions mènent à une production artistique de qualité.'
+              'Cliquez sur le bouton Canvas dans Gemini et demandez : « Crée un module interactif pour apprendre la théorie des couleurs. »',
+              'Explorez le résultat : est-ce que le module est engageant? Les interactions fonctionnent-elles?',
+              'Itérez dans Canvas pour ajuster le contenu, le niveau de difficulté ou l\'interactivité.',
+              'Réflexion : comment ce module pourrait-il être utilisé différemment selon les profils d\'élèves (douance, difficultés, TSA)?'
             ],
-            deliverable: 'Montrez les trois versions du brief de projet.'
+            deliverable: 'Montrez le module interactif et expliquez comment vous l\'utiliseriez en classe.'
           },
           {
             title: 'Critique d\'art interactive',
@@ -1038,7 +1039,7 @@
             objective: 'Utilisez le mode apprentissage guidé pour simuler une discussion critique sur une œuvre d\'art, adaptée au profil de l\'élève.',
             steps: [
               'Activez le mode apprentissage guidé.',
-              'Soumettez une reproduction d\'œuvre (décrivez-la ou uploadez une image).',
+              'Soumettez une reproduction d\'œuvre (décrivez-la ou téléversez une image).',
               'Simulez un <strong>élève doué</strong> : observez si Gemini pose des questions ouvertes et poussées sur l\'interprétation.',
               'Simulez un <strong>élève en difficulté</strong> : observez si Gemini offre des choix, des indices visuels, des pistes.',
               'Comparez les deux parcours de discussion.'
@@ -1052,7 +1053,7 @@
             required: true,
             objective: 'Générez une infographie présentant une technique artistique. Référence visuelle murale accessible à tous les élèves.',
             steps: [
-              'Demandez à Gemini de créer une infographie sur une technique (couleurs complémentaires, perspective, techniques de gravure, un mouvement artistique…).',
+              'Cliquez sur le bouton « créer une image » dans Gemini et demandez une infographie sur une technique (couleurs complémentaires, perspective, techniques de gravure, un mouvement artistique…).',
               'Précisez : peu de texte, beaucoup de visuels, adapté pour le secondaire.',
               'Itérez sur le prompt pour améliorer l\'aspect visuel et la clarté.',
               'Essayez avec une deuxième technique si le temps le permet.'
@@ -1062,17 +1063,17 @@
         ],
         notebookLM: [
           {
-            title: 'Mouvement artistique en podcast',
+            title: 'Aperçu vidéo sur un artiste',
             tool: 'NotebookLM',
             toolClass: 'nlm',
-            objective: 'Uploadez des textes sur un mouvement artistique et générez un Aperçu audio. Outil d\'introduction auditive.',
+            objective: 'Téléversez des informations sur un artiste de votre choix et générez un Aperçu vidéo. Outil d\'introduction visuelle pour vos élèves.',
             steps: [
-              'Créez un notebook et uploadez des textes sur un mouvement artistique (impressionnisme, art contemporain, street art…).',
-              'Générez un Aperçu audio.',
-              'Écoutez : est-ce une bonne introduction pour un élève qui apprend mieux en écoutant?',
+              'Créez un notebook et joignez des sources sur un artiste (articles, sites web, biographies…).',
+              'Générez un Aperçu vidéo.',
+              'Regardez : est-ce une bonne introduction à l\'artiste pour vos élèves?',
               'Réflexion : pourriez-vous l\'utiliser en début de cours comme mise en contexte?'
             ],
-            deliverable: 'Faites écouter un extrait et partagez votre évaluation.'
+            deliverable: 'Faites regarder un extrait et partagez votre évaluation.'
           },
           {
             title: 'Guide de visite / guide d\'étude',
@@ -1080,7 +1081,7 @@
             toolClass: 'nlm',
             objective: 'Générez un guide d\'étude sur un artiste ou un mouvement, puis demandez une version avec vocabulaire adapté.',
             steps: [
-              'Uploadez des textes sur un artiste ou un mouvement au programme.',
+              'Téléversez des textes sur un artiste ou un mouvement au programme.',
               'Demandez un guide d\'étude.',
               'Demandez une version avec vocabulaire adapté et repères visuels suggérés.',
               'Comparez les deux versions.'
